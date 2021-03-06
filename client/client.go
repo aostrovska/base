@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net"
 	"fmt"
+	"net"
 )
 
 func main() {
@@ -16,7 +16,16 @@ func main() {
 	fmt.Scan(&s)
 
 	conn.Write([]byte(s))
-
+	switch s {
+	case "delete":
+		var id int
+		fmt.Scan(&id)
+		conn.Write(id)
+	case "add":
+		var person interface{}
+		fmt.Scan(&person)
+		conn.Write(person)
+	}
 	buf := make([]byte, 2000)
 
 	n, err := conn.Read(buf)
