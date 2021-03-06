@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"net"
 )
@@ -144,19 +145,17 @@ func HandleConnection(conn net.Conn) {
 	dat.N = string(buf[:n])
 	switch dat.N {
 	case "delete":
-		data := []byte("Input ID : ")
-		conn.Write(data)
+		fmt.Println("Input ID : ")
 		var IdDat IdData
 		fmt.Println(string(buf[:n]))
-		IdDat.id = int(buf[:n])
+		IdDat.id = int(binary.BigEndian.Uint64(buf[:n]))
 		Remove(school, IdDat.id)
 	case "add":
-		data = []byte("Input person : ")
-		conn.Write(data)
+		fmt.Println("Input person : ")
 		var ObjDat ObjData
 		fmt.Println(string(buf[:n]))
-		ObjDat.obj = interface{}(buf[:n])
-		Add(school, ObjDat.obj)
+		ObjDat.obj = School(interface{}(buf[:n]))
+		Add(&school, ObjDat.obj)
 	case "list all":
 		listAll(school)
 	case "list students":
