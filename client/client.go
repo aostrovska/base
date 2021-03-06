@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"net"
 )
@@ -18,13 +19,15 @@ func main() {
 	conn.Write([]byte(s))
 	switch s {
 	case "delete":
-		var id int
+		var id uint32
 		fmt.Scan(&id)
-		conn.Write(id)
+		bs := make([]byte, 4)
+		binary.LittleEndian.PutUint32(bs, id)
+		conn.Write(bs)
 	case "add":
 		var person interface{}
 		fmt.Scan(&person)
-		conn.Write(person)
+		conn.Write(person.([]byte))
 	}
 	buf := make([]byte, 2000)
 
