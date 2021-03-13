@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/binary"
 	"fmt"
 	"net"
 )
@@ -12,29 +11,16 @@ func main() {
 		panic(err)
 	}
 	defer conn.Close()
-
 	var s string
 	fmt.Scan(&s)
-
 	conn.Write([]byte(s))
-	switch s {
-	case "delete":
-		var id uint32
-		fmt.Scan(&id)
-		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, id)
-		conn.Write(bs)
-	case "add":
-		var person interface{}
-		fmt.Scan(&person)
-		conn.Write(person.([]byte))
-	}
-	buf := make([]byte, 2000)
+	//buf := make([]byte, 2000)
 
-	n, err := conn.Read(buf)
-	if err != nil {
-		panic(err)
-	}
+	/*	n, err := conn.Read(buf)
+		if err != nil {
+			panic(err)
 
-	fmt.Println(string(buf[:n]))
+		fmt.Println(string(buf[:n]))
+		}
+	*/
 }
